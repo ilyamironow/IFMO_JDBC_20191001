@@ -29,7 +29,7 @@ public class ServiceFactory {
         res.beforeFirst();
         List<Employee> ans = new ArrayList<>();
         while (res.next()) {
-            ans.add(employeeRowMapper(res,true));
+            ans.add(employeeRowMapper(res, true));
         }
         return ans;
     }
@@ -38,7 +38,7 @@ public class ServiceFactory {
         Employee cur = null;
         try {
             String managerId = resultSet.getString("MANAGER");
-            if (!isFirstLevel){
+            if (!isFirstLevel) {
                 managerId = null;
             }
             String departmentId = resultSet.getString("DEPARTMENT");
@@ -100,7 +100,7 @@ public class ServiceFactory {
             ResultSet res = getResultset("select * from employee where id = " + Id);
             assert res != null;
             res.next();
-            return employeeRowMapper(res,false);
+            return employeeRowMapper(res, false);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -141,6 +141,7 @@ public class ServiceFactory {
         }
         return ans;
     }
+
     private List<Employee> getAllSortBy(String from, Paging paging) {
         try {
             ResultSet res = getResultset(
@@ -184,7 +185,7 @@ public class ServiceFactory {
 
             @Override
             public List<Employee> getByDepartmentSortByHireDate(Department department, Paging paging) {
-                return getAllSortBy("select * from employee where department = "+department.getId()+"order by hiredate", paging);
+                return getAllSortBy("select * from employee where department = " + department.getId() + "order by hiredate", paging);
             }
 
             @Override
@@ -213,8 +214,8 @@ public class ServiceFactory {
 
             @Override
             public List<Employee> getByManagerSortBySalary(Employee manager, Paging paging) {
-                    return getAllSortBy("select * from employee where manager = " +
-                            manager.getId()+"order by salary", paging);
+                return getAllSortBy("select * from employee where manager = " +
+                        manager.getId() + "order by salary", paging);
             }
 
             @Override
@@ -234,9 +235,9 @@ public class ServiceFactory {
             public Employee getTopNthBySalaryByDepartment(int salaryRank, Department department) {
                 try {
                     ResultSet res = getResultset(
-                            "select * from employee where department = "+department.getId()+"order by salary desc" +
+                            "select * from employee where department = " + department.getId() + "order by salary desc" +
                                     " limit 1" +
-                                    " offset " + (salaryRank-1)
+                                    " offset " + (salaryRank - 1)
                     );
                     assert res != null;
                     return getEmployeeListByResultSet(res).get(0);
